@@ -257,16 +257,15 @@ def run_analysis(feature_info):
 
     # Genotype versus Phenotype (MBKbase)
     genopheno = os.path.join(workdir, gene, "genopheno_raw.bedGraph")
-    # Calculate scores
-    scores_genopheno = genopheno_scores(geneinfo, genopheno, outdir = workdir)
-
-    # Aggregate scores
-    if scores_genopheno:
+    if os.path.exists(genopheno):
+        # Calculate scores
+        scores_genopheno = genopheno_scores(geneinfo, genopheno, outdir = workdir)
         scorelist = [scores_oc, scores_motif, scores_cns, scores_ptm, scores_genopheno]
         weightlist = [0.25, 0.2, 0.3, 0.1, 0.05]
     else:
         scorelist = [scores_oc, scores_motif, scores_cns, scores_ptm]
         weightlist = [0.25, 0.2, 0.3, 0.1]
+    # Aggregate scores
     scores_aggregate = aggregate_scores(geneinfo, scorelist, weightlist, outdir = workdir)
 
     # Load phenodata from CRISPR-edited results
